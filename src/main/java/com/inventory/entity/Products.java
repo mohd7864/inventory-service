@@ -12,15 +12,22 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="categories")
+@Table(name="products")
 @Data
-public class Categories implements Serializable {
+public class Products implements Serializable {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    private Long categoryId;
-	@Column(name="category_name")
-	private String category_name;;
+    @Column(name = "product_id")
+    private Long productId;
+	@Column(name="product_name")
+	private String product_name;
+	@Column(name="product_brand")
+	private String product_brand;
+	@Column(name="units")
+	private Integer units;
+	@Column(name="price")
+	private Double price;
+	
 
 }

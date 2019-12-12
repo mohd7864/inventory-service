@@ -9,26 +9,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.inventory.entity.Categories;
-import com.inventory.model.Category;
+import com.inventory.entity.Products;
+import com.inventory.model.Product;
 import com.inventory.model.MessageResponse;
-import com.inventory.repositories.CategoryRepository;
+import com.inventory.repositories.ProductRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class CategoryServiceImpl implements CategoryService {
+public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	RabbitMQService amqService;
 
 	@Autowired
-	CategoryRepository repository;
+	ProductRepository repository;
 
 	@Override
-	public ResponseEntity<MessageResponse> createCategory(Category category) {
-		amqService.sendMessage(category);
+	public ResponseEntity<MessageResponse> createProduct(Product product) {
+		amqService.sendMessage(product);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException ex) {
@@ -36,27 +36,27 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		MessageResponse resp = new MessageResponse();
 		resp.setCode(201);
-		resp.setMsg("Category is created");
+		resp.setMsg("Product is created");
 		amqService.getMessage(resp);
 		return new ResponseEntity<>(resp, HttpStatus.CREATED);
 	}
 
 	@Override
-	public List<Categories> getCategories() {
+	public List<Products> getProducts() {
 
 		return repository.findAll();
 
 	}
 
-	@CacheEvict(value = "category")
-	public void evictCategories() {
-		log.info("Evict post-top");
+	@CacheEvict(value = "product")
+	public void evictProducts() {
+		log.info("Products Evicted");
 	}
 
 	@Override
-	public ResponseEntity<MessageResponse> updateCategory(Long catId, Category category) {
-		category.setCatId(catId);
-		amqService.updateMessage(category);
+	public ResponseEntity<MessageResponse> updateProduct(Long pId, Product product) {
+		product.setProductId(pId);
+		amqService.updateMessage(product);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException ex) {
@@ -64,15 +64,15 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		MessageResponse resp = new MessageResponse();
 		resp.setCode(200);
-		resp.setMsg("Category is updated");
+		resp.setMsg("Product is updated");
 		amqService.getMessage(resp);
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 
-	@Cacheable(value = "category")
-	public List<Categories> getAllCategories() {
+	@Cacheable(value = "product")
+	public List<Products> getAllProducts() {
 		log.info("Reloading the data in Cache...");
-		return this.getCategories();
+		return this.getProducts();
 	}
 
 }

@@ -13,46 +13,44 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.inventory.entity.Categories;
-import com.inventory.model.Category;
-import com.inventory.model.CategoryResponse;
+import com.inventory.entity.Products;
+import com.inventory.model.Product;
 import com.inventory.model.MessageResponse;
-import com.inventory.services.CategoryService;
+import com.inventory.services.ProductService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-public class CategoryController {
+public class ProductController {
 	
 	@Autowired
-	CategoryService catService;
+	ProductService productService;
 	
 	@GetMapping("/healthcheck")
 	public ResponseEntity<String> healthcheck(){
 		return new ResponseEntity<>("Success",HttpStatus.OK);
 	}
 	
-	@PostMapping("/categories")
-    public ResponseEntity<MessageResponse> postMessage(@RequestBody Category category){
+	@PostMapping("/products")
+    public ResponseEntity<MessageResponse> postMessage(@RequestBody Product product){
 		
-		return catService.createCategory(category);
+		return productService.createProduct(product);
 		
     }
 	
-	@Cacheable(value = "category")
-	@GetMapping("/categories")
-    public List<Categories> getMessage(){
-		//catService.evictCategorie();
+	@Cacheable(value = "product")
+	@GetMapping("/products")
+    public List<Products> getMessage(){
 		log.info("Returning Data from DB...");
-		return catService.getCategories();
+		return productService.getProducts();
 		
     }
 	
-	@PutMapping("/categories/{catId}")
-    public ResponseEntity<MessageResponse> putMessage(@PathVariable String catId,@RequestBody Category category){
+	@PutMapping("/products/{pId}")
+    public ResponseEntity<MessageResponse> putMessage(@PathVariable String pId,@RequestBody Product product){
 		
-		return catService.updateCategory(Long.valueOf(catId), category);
+		return productService.updateProduct(Long.valueOf(pId), product);
 		
     }
 	

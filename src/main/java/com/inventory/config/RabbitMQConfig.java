@@ -11,19 +11,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    private String INSERT_QUEUE="category-queue";
+    private String INSERT_QUEUE="products-queue";
     
-    private String UPDATE_QUEUE="category-update";
+    private String UPDATE_QUEUE="products-update";
     
-    private String GET_QUEUE="category-get";
+    private String GET_QUEUE="products-get";
 
-    private String EXCHANGE="category-exchange";
+    private String EXCHANGE="products-exchange";
 
-    private String ROUTING_KEY="categories";
+    private String ROUTING_KEY="products";
     
-    private String ROUTING_KEY_UPD ="categories-upd";
+    private String ROUTING_KEY_UPD ="products-upd";
     
-    private String ROUTING_KEY_GET ="categories-gt";
+    private String ROUTING_KEY_GET ="products-gt";
     
     @Bean
     Queue insertqueue() {
